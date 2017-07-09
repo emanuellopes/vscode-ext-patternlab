@@ -1,0 +1,45 @@
+{
+	"name": "Pattern Lab",
+	"description": "Pattern Lab Visual Studio Code",
+	"version": "0.2.0",
+	"publisher": "emanuellopes",
+	"engines": {
+		"vscode": "^0.10.1"
+	},
+	"icon": "images/icon.png",
+	"repository": {
+		"type": "https",
+		"url": "https://github.com/andrejunges/vscode-handlebars"
+	},
+	"galleryBanner": {
+		"color": "#0F6378",
+		"theme": "dark"
+	},
+	"categories": [
+		"Languages",
+		"Snippets"
+	],
+	"contributes": {
+		"languages": [{
+			"id": "handlebars",
+			"aliases": ["Handlebars", "handlebars"],
+			"extensions": [".handlebars",".hbs",".tpl"],
+			"configuration": "./handlebars.configuration.json"
+		}],
+		"grammars": [{
+			"language": "handlebars",
+			"scopeName": "text.html.handlebars",
+			"path": "./syntaxes/handlebars.tmLanguage"
+		}],
+		"snippets": [
+			{
+				"language": "handlebars",
+				"path": "./snippets/snippets_hbs.json"
+			},
+			{
+				"language": "json",
+				"path": "./snippets/snippets_json.json"
+			}
+		]
+	}
+}

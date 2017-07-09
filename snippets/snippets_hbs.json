@@ -1,0 +1,47 @@
+{
+	"if": {
+		"prefix": "if",
+		"body": "{{#if ${1:condition}}}\n\t${0}\n{{/if}}",
+		"description": "IF"
+	},
+	"ifel": {
+		"prefix": "ifel",
+		"body": "{{#if ${2:condition}}}\n\t${1}\n{{else}}\n\t${0}\n{{/if}}",
+		"description": "IF ELSE"
+	},
+	"else": {
+		"prefix": "else",
+		"body": "{{else}}",
+		"description": "ELSE"
+	},
+	"each": {
+		"prefix": "each",
+		"body": "{{#each ${1:list} as |${2:alias}|}}\n\t${0}\n{{/each}}",
+		"description": "EACH"
+	},
+	"partial": {
+		"prefix": "partial",
+		"body": "{{> ${1}}}",
+		"description": "partial"
+	},
+	"unless (handlebars)": {
+		"prefix": "un",
+		"body": "{{#unless ${1}}}\n\t${0}\n{{/unless}}",
+		"description": "unless"
+	},
+	"with (handlebars)": {
+		"prefix": "wi",
+		"body": "{{#with ${1}}}\n\t${0}\n{{/with}}",
+		"description": "with"
+	},
+	"template (id)": {
+		"prefix": "x-id",
+		"body": "<script type='text/x-handlebars-template' id='$1'>\n\t$0\n</script>",
+		"description": "tempalte javascript"
+	},
+	"template (data-template-name)": {
+		"prefix": "x-temp",
+		"body": "<script type='text/x-handlebars' data-template-name='$1'>\n\t$0\n</script>",
+		"description": "template name"
+	}
+}

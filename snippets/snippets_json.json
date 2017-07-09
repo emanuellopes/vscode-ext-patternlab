@@ -1,0 +1,12 @@
+{
+	"atom-text": {
+		"prefix": "atom-text",
+		"body": "{\n\t\"heading\" : \"titleheading\",\n\t\"subheading\" : \"subheading\",\n\t\"type\" : \"h2\"\n}",
+		"description": "atom-text"
+	},
+	"atom-logo-title-text": {
+		"prefix": "atom-logo-title-text",
+		"body": "{\n\t\"logo\" : {\n\t\t\"src\" : \"http://placehold.it/216x55\"\n\t},\n\t\"title\" : \"{{{title}}}\",\n\t\"titleClasses\" : \"h3 margin-top-1-5x\",\n\t\"text\" : \"{{{text}}}\"\n}",
+		"description": "atom logo text"
+	}
+}
