@@ -5,7 +5,7 @@ use JSON;
 use Data::Dumper;
 sub list_files;
 sub read_file;
-sub snipetname;
+sub snippetname;
 sub write_json;
 
 my $num_args = $#ARGV + 1;
@@ -35,6 +35,7 @@ sub list_files{
     opendir(my $DIR, $path) || die "Can't open $path: $!";
     while (readdir $DIR) {
         next if $_ =~ /^\./; #remove . and hidden folders
+        next if $_ =~ /[0-9][0-9]-organisms/;
         next if $_ =~ /[0-9][0-9]-templates/;
         next if $_ =~ /[0-9][0-9]-storefront-pages/;
         next if $_ =~ /[0-9][0-9]-account-panel-page/;
@@ -67,19 +68,20 @@ sub read_file{
 
     close $fh;
 
-    my $name = snipetname($filename);
+    my $name = snippetname($filename);
+    if(length $json_concat >5){
+      my %tempinfo = (
+          "prefix"  => $name,
+          "body" => $json_concat,
+          "description"  => "snipet-$name"
+      );
+      (my $key = $name) =~ s/-//g;
 
-    my %tempinfo = (
-        "prefix"  => $name,
-        "body" => $json_concat,
-        "description"  => "snipet-$name"
-    );
-    (my $key = $name) =~ s/-//g;
-
-    $json_hashmap{$name} = \%tempinfo;
+      $json_hashmap{$name} = \%tempinfo;
+    }
 }
 
-sub snipetname{
+sub snippetname{
   my $filename = $_[0];
 
   my @path = split(/\//,$filename);
@@ -91,15 +93,15 @@ sub snipetname{
       last;
     }
   }
-  (my $snipetname = "$object-$file") =~ s/.json//g;
-  return $snipetname;
+  (my $snippetname = "$object-$file") =~ s/.json//g;
+  return $snippetname;
 }
 
 sub write_json{
 
     my $json = JSON->new;
 
-    open my $fh, ">", "/Users/emanuelx/file.json";
+    open my $fh, ">", "./snippets/snippets_json.json";
     print $fh encode_json(\%json_hashmap);
     close $fh;
     #print Dumper $json;
