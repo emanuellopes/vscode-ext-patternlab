@@ -2,8 +2,11 @@
 use strict;
 use warnings;
 use JSON;
+use Data::Dumper;
 sub list_files;
 sub read_file;
+sub snipetname;
+sub write_json;
 
 my $num_args = $#ARGV + 1;
 if ($num_args != 1) {
@@ -17,18 +20,11 @@ my $path_folder = $ARGV[0];
 my %json_hashmap;
 
 #meter isto a funcionar chamar as funções
-#list_files($path_folder);
-#escrever no ficheiro de texto 
-#write_json();
+list_files($path_folder);
+#escrever no ficheiro de texto
+write_json();
 
-my $teste = "/Users/emanuelx/Documents/Namecheap Projects/nc.ui.bootstrap.wiki.bx_old/source/_patterns/02-organisms/20-tabs/00-tabs-vertical.json";
 
-my @path = split(/\//,$teste);
-#foreach my $x (@path) {
-  my $filename = $path[$#path];
-  print $path[$#path-2];
-  #todo dar nome ao atomo
-#}
 
 
 
@@ -64,43 +60,48 @@ sub read_file{
     local $/=undef; #read all file
     open my $fh, $filename or die "could open file";
     $json = <$fh>;
-    #print $json;
-    no warnings;
-    my  %replacements = ('  ' => '\\t', '\R' => '\\n', '"'=>'\\"');
-    (my $json_concat = $json) =~ s/(@{[join "|", keys %replacements]})/$replacements{$1}/g;
+
+    (my $tabs = $json) =~ s/ /\t/g;
+    (my $spaces = $tabs) =~ s/\R/\n/g;
+    (my $json_concat = $spaces) =~ s/"/\"/g;
 
     close $fh;
 
-    #print "$json_concat\n";
-    print $filename;
-
+    my $name = snipetname($filename);
 
     my %tempinfo = (
-        "prefix"  => "vermelha",
+        "prefix"  => $name,
         "body" => $json_concat,
-        "descrition"  => "lilas"
+        "description"  => "snipet-$name"
     );
+    (my $key = $name) =~ s/-//g;
 
-    $json_hashmap{"teste"} = %tempinfo;
+    $json_hashmap{$name} = \%tempinfo;
 }
 
+sub snipetname{
+  my $filename = $_[0];
 
+  my @path = split(/\//,$filename);
+  (my $file = $path[$#path]) =~ s/^[0-9][0-9]-//g;
+  my $object;
+  for (my $i = $#path; $i > 1; $i--) {
+    if(($path[$i] =~ /[0-9][0-9]-atoms/) || ($path[$i] =~ /[0-9][0-9]-organism/) || ($path[$i] =~ /[0-9][0-9]-molecules/)){
+      ($object = $path[$i]) =~ s/^[0-9][0-9]-//g;
+      last;
+    }
+  }
+  (my $snipetname = "$object-$file") =~ s/.json//g;
+  return $snipetname;
+}
 
 sub write_json{
-  print "write";
+
     my $json = JSON->new;
 
-    #my %teste_all;
-    #my %teste = ("a"=>"a", "b"=>"b");
-    #$teste_all{"a"}= \%teste;
-    #$teste_all{"b"}= \%teste;
-
-  #print $json->encode(\%json_hashmap) . "\n";
-#    open my $fh, ">", "/Users/emanuelx/teste.json";
-#    print $fh encode_json($data);
-#    close $fh;
-    my $data = decode_json(%json_hashmap);
     open my $fh, ">", "/Users/emanuelx/file.json";
-    print $fh encode_json($data);
+    print $fh encode_json(\%json_hashmap);
     close $fh;
+    #print Dumper $json;
+    print "done!"
 }
